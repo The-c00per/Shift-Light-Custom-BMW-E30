@@ -53,6 +53,18 @@ Le module est conçu pour être branché directement sur le faisceau électrique
 ![Installation finale dans l'E30](images/installation_e30.jpg)
 _Image de l'intégration finale du Shift-Light dans l'habitacle de la BMW E30._
 
+
+## 📚 Références et Sources techniques
+
+Ce projet a été rendu possible grâce aux ressources documentaires de la communauté BMW E30 :
+
+* **Schémas de câblage et Tests sur banc** : [Instructables - Bench Testing BMW E30 Tachometer](https://www.instructables.com/Bench-Testing-BMW-E30s-Tachometer/)
+* **Inspiration Shift-Light** : [Instructables - BMW E30 Shift Light](https://www.instructables.com/BMW-E30s-Shift-Light/)
+* **Conception Hardware (SI Board)** : [GitHub de Fabian Gmeiner (BMW_E30_SI_Board)](https://github.com/FabianGmeiner/BMW_E30_SI_Board)
+* **Solutions Commerciales (Analyse)** : [MyClassicParts - E30 SI Board Shift Lights](https://www.myclassicparts.com/product/bmw-e30-si-board-shift-lights/)
+
+> *Note : Les images techniques et les numéros de pins (C1 Pin 7 pour le RPM) proviennent de la documentation technique officielle BMW et des guides communautaires cités ci-dessus.*
+
 ## 🤝 Contribution
 N'hésitez pas à proposer des améliorations ou des modifications pour ce projet !
 
