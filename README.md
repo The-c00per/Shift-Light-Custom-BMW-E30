@@ -1,3 +1,11 @@
+## 🚀 État du Projet
+- [x] Conception du schéma
+- [x] Prototype sur table (Validé)
+- [ ] Montage final dans la E30
+
+**Note de test :**
+> Prototype validé sur ESP32-C3 Super Mini. Simulation d'impulsions via pull-up interne et injection de signal sur base NPN concluante. Les 9 LED WS2812B répondent avec une latence imperceptible (<100ms).
+
 # 🏎️ BMW E30 Custom Shift-Light (ESP32)
 
 ![Languague](https://img.shields.io/badge/Language-Arduino%20/%20C++-blue)
