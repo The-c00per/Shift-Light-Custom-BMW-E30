@@ -1,0 +1,70 @@
+#include <Adafruit_NeoPixel.h>
+#include "BluetoothSerial.h"
+
+// --- CONFIGURATION ---
+#define PIN_RPM      34    
+#define PIN_LED      2     
+#define NUM_LEDS     9     
+
+Adafruit_NeoPixel strip(NUM_LEDS, PIN_LED, NEO_GRB + NEO_KHZ800);
+BluetoothSerial SerialBT;
+
+// --- VARIABLES MODIFIABLES VIA BLUETOOTH ---
+int rpmMax = 6000;
+int rpmMin = 1500;
+int luminosite = 150;
+
+volatile int pulseCount = 0;
+unsigned long lastMillis = 0;
+
+void IRAM_ATTR countPulse() {
+  pulseCount++;
+}
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("E30_ShiftLight"); // Nom du Bluetooth sur ton téléphone
+  
+  strip.begin();
+  strip.setBrightness(luminosite);
+  strip.show(); 
+  
+  pinMode(PIN_RPM, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(PIN_RPM), countPulse, RISING);
+}
+
+void loop() {
+  // --- GESTION DU BLUETOOTH ---
+  if (SerialBT.available()) {
+    char incomingChar = SerialBT.read();
+    if (incomingChar == '+') rpmMax += 100; // Envoie '+' pour augmenter le rupteur
+    if (incomingChar == '-') rpmMax -= 100; // Envoie '-' pour le baisser
+    if (incomingChar == 'L') {              // Envoie 'L' pour changer la luminosité
+       luminosite = (luminosite == 150) ? 50 : 150; 
+       strip.setBrightness(luminosite);
+    }
+  }
+
+  unsigned long currentMillis = millis();
+  if (currentMillis - lastMillis >= 100) {
+    noInterrupts();
+    int pulses = pulseCount;
+    pulseCount = 0;
+    interrupts();
+
+    float rpm = pulses * 200.0; // Spécial 6 cylindres M20
+
+    // Calcul du remplissage
+    int ledsToLight = map(rpm, rpmMin, rpmMax, 0, NUM_LEDS);
+    ledsToLight = constrain(ledsToLight, 0, NUM_LEDS);
+
+    strip.clear();
+    for (int i = 0; i < ledsToLight; i++) {
+      if (i < 5)      strip.setPixelColor(i, strip.Color(0, 255, 0));   // VERT
+      else if (i == 5) strip.setPixelColor(i, strip.Color(255, 150, 0)); // JAUNE
+      else            strip.setPixelColor(i, strip.Color(255, 0, 0));   // ROUGE
+    }
+    strip.show();
+    lastMillis = currentMillis;
+  }
+}
